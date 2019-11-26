@@ -18,11 +18,12 @@ CREATE TABLE IF NOT EXISTS STORE(
   email_address VARCHAR(255) NOT NULL,
   passwd VARCHAR(255) NOT NULL,
   phone_number VARCHAR(255) NOT NULL,
-   address VARCHAR(255) NOT NULL,
-   gender VARCHAR(1) NOT NULL,
-   dob DATE NOT NULL,
-   PRIMARY KEY(cust_id)
-
+  address VARCHAR(255) NOT NULL,
+  gender VARCHAR(1) NOT NULL,
+  dob DATE NOT NULL,
+  PRIMARY KEY(cust_id),
+  CONSTRAINT unique_email UNIQUE (email_address),
+  CONSTRAINT unique_phone UNIQUE (phone_number)
   );
 
 /* ALTER TABLE SCRIPT FOR AUTO_INCREMENT ON PRIMARY KEY */
@@ -33,7 +34,7 @@ CREATE INDEX idx_cust ON CUSTOMERS(cust_id);
 
 /* CREATING TABLE 'STAFF' */
 CREATE TABLE IF NOT EXISTS STAFF(
-    staff_id INT NOT NULL,
+    staff_id INT NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     email_address VARCHAR(255) NOT NULL,
@@ -46,7 +47,9 @@ CREATE TABLE IF NOT EXISTS STAFF(
     store_id INT NOT NULL,
     PRIMARY KEY (staff_id),
     CONSTRAINT Store_details FOREIGN KEY
-                (store_id) REFERENCES STORE(store_id)
+                (store_id) REFERENCES STORE(store_id),
+   CONSTRAINT unique_email UNIQUE (email_address),
+   CONSTRAINT unique_phone UNIQUE (phone_number)
  );
 
 /* ALTER TABLE SCRIPT FOR AUTO_INCREMENT ON PRIMARY KEY */
@@ -94,7 +97,9 @@ CREATE TABLE IF NOT EXISTS SUPPLIER (
   address varchar (255) NOT NULL,
   phone_number varchar (20) NOT NULL,
   email_address varchar (20) NOT NULL,
-  PRIMARY KEY (supplier_id)
+  PRIMARY KEY (supplier_id),
+  CONSTRAINT unique_email UNIQUE (email_address),
+  CONSTRAINT unique_phone UNIQUE (phone_number)
 );
 
 /* ALTER TABLE SCRIPT FOR AUTO_INCREMENT ON PRIMARY KEY */
@@ -104,8 +109,8 @@ ALTER TABLE SUPPLIER AUTO_INCREMENT = 3000;
 CREATE TABLE IF NOT EXISTS STOCK (
   stock_id int NOT NULL AUTO_INCREMENT,
   supply_date date NOT NULL,
-  tax_pct float NOT NULL,
-  total_cost float (20) NOT NULL,
+  overhead_pct float NOT NULL,
+  total_cost float (20) NOT NULL DEFAULT 0,
   supplier_id int NOT NULL,
   PRIMARY KEY (stock_id),
   CONSTRAINT Supplier_Stock_Details FOREIGN KEY
